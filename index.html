@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>مغامرة في مدينة الأرقام</title><style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;font-family:"Segoe UI","Noto Naskh Arabic",Tahoma,Arial,sans-serif;color:#3b2a6b;user-select:none}
+body{background:linear-gradient(#8fd3ff,#e8f7ff);transition:background .6s}
+body[data-bg="1"]{background:linear-gradient(#a8e6a1,#f3ffe0)}body[data-bg="2"]{background:linear-gradient(#ffd89b,#fff3d6)}
+body[data-bg="3"]{background:linear-gradient(#bde0fe,#ffe5ec)}body[data-bg="4"]{background:linear-gradient(#cdb4ff,#ffd6f5)}body[data-bg="5"]{background:linear-gradient(#a0c4ff,#caffbf)}
+.screen{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:2vmin;padding:2vmin;text-align:center;overflow:auto}
+.screen.on{display:flex;animation:in .5s}@keyframes in{from{opacity:0;transform:scale(.96)}}
+h1{font-size:clamp(32px,8vmin,72px);margin:0;color:#6a35d9;text-shadow:0 .6vmin 0 #fff,0 1.2vmin 1vmin #0003}
+h2{font-size:clamp(28px,6vmin,52px);margin:0;color:#6a35d9;text-shadow:0 .5vmin 0 #fff}.sub{margin:0;font-size:3vmin;letter-spacing:.3vmin}
+.btn{border:0;border-radius:40px;padding:1.6vmin 5vmin;font:800 clamp(20px,4.5vmin,38px) inherit;font-family:inherit;color:#4a2600;cursor:pointer;background:linear-gradient(#ffe066,#ff9800);box-shadow:0 .9vmin 0 #c66900,0 1.6vmin 1.4vmin #0003,inset 0 .5vmin .8vmin #fffa}
+.btn.blue{background:linear-gradient(#8ad0ff,#2a9df4);box-shadow:0 .9vmin 0 #1566a8,0 1.6vmin 1.4vmin #0003,inset 0 .5vmin .8vmin #fffa;color:#fff}
+.btn:active{transform:translateY(.7vmin)}.btn.sm{font-size:clamp(14px,2.6vmin,24px);padding:1vmin 2.5vmin}
+.rnd{position:fixed;top:1.5vmin;left:1.5vmin;z-index:9;width:7vmin;height:7vmin;min-width:44px;min-height:44px;border-radius:50%;border:0;font-size:3.5vmin;background:#fff;box-shadow:0 .6vmin 0 #bbb}
+.city{width:min(90vw,70vh);height:auto}.mas{width:min(30vmin,200px)}.mas.small{width:min(16vmin,110px)}.mas.big{width:min(40vmin,260px)}
+.mas svg,.city{filter:drop-shadow(0 1vmin 1vmin #0003)}.mas svg{animation:bob 2s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-1.2vmin)}}
+.cards{display:flex;flex-wrap:wrap;gap:2vmin;justify-content:center}.cards div{width:min(40vw,230px);background:#fff;border-radius:3vmin;padding:2vmin;font-size:7vmin;box-shadow:0 .8vmin 0 #d9c8ff}.cards span{display:block;font-size:max(17px,2.8vmin);font-weight:700}
+#map{position:relative;display:flex;flex-wrap:wrap;gap:2.5vmin;justify-content:center;max-width:900px}
+.node{width:min(26vmin,170px);height:min(26vmin,170px);border-radius:30%;border:0;background:linear-gradient(#fff,#e1d4ff);box-shadow:0 1vmin 0 #a98bf0,0 1.6vmin 1.4vmin #0003;font:800 3vmin inherit;font-family:inherit;color:#3b2a6b;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.node i{font-style:normal;font-size:8vmin}.node.lock{filter:grayscale(1);opacity:.6}.node.next{animation:pop 1s infinite}@keyframes pop{50%{transform:scale(1.07)}}
+#tot{font-size:4vmin;font-weight:800}
+.bar{display:flex;gap:2vmin;align-items:center;justify-content:space-between;width:100%;max-width:1000px;font-size:3.2vmin;font-weight:800;flex-wrap:wrap}
+.screen#sc-play{justify-content:flex-start}.talk{display:flex;align-items:center;gap:2vmin;max-width:900px}
+#bubble{background:#fff;border-radius:3vmin;padding:2vmin 3vmin;font-size:clamp(20px,4.2vmin,38px);font-weight:800;box-shadow:0 .7vmin 0 #d9c8ff;cursor:pointer}
+#stage{flex:1;width:100%;max-width:1000px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly}
+.choices{display:flex;gap:3vmin;flex-wrap:wrap;justify-content:center}.num{min-width:min(24vmin,170px);height:min(24vmin,170px);border:0;border-radius:28%;font:900 14vmin inherit;font-family:inherit;color:#fff;cursor:pointer;background:linear-gradient(#ff8a8a,#f03e3e);box-shadow:0 1vmin 0 #a61e1e,inset 0 .8vmin 1vmin #fff7}
+.num:nth-child(2){background:linear-gradient(#8ce99a,#2f9e44);box-shadow:0 1vmin 0 #1b6b2c,inset 0 .8vmin 1vmin #fff7}.num:nth-child(3){background:linear-gradient(#74c0fc,#1c7ed6);box-shadow:0 1vmin 0 #114b8a,inset 0 .8vmin 1vmin #fff7}.num:nth-child(4){background:linear-gradient(#ffd43b,#f08c00);box-shadow:0 1vmin 0 #9a5800,inset 0 .8vmin 1vmin #fff7}
+.num.ok{animation:ok .6s}@keyframes ok{40%{transform:scale(1.25) rotate(8deg)}}.num.bad,.tile.bad{animation:shk .4s}@keyframes shk{25%{transform:translateX(-1.5vmin)}75%{transform:translateX(1.5vmin)}}
+.hint{outline:1vmin dashed #ffd700;animation:pop .8s infinite}
+.items{display:flex;flex-wrap:wrap;gap:1.5vmin;justify-content:center;font-size:11vmin;max-width:90vw}.items span{animation:bob 1.6s infinite}
+.train,.doors,.pool{display:flex;gap:2vmin;justify-content:center;align-items:center;flex-wrap:wrap}.loco{font-size:12vmin}
+.drop{width:min(17vmin,120px);height:min(17vmin,120px);border-radius:20%;background:#fff8;border:.8vmin dashed #7a5af5;display:flex;align-items:center;justify-content:center;position:relative}
+.drop.door{width:min(26vmin,170px);height:min(32vmin,210px);background:linear-gradient(#c68a55,#8b5a2b);border:1vmin solid #5c3a14;border-radius:12vmin 12vmin 2vmin 2vmin}.door b{position:absolute;top:2vmin;font-size:10vmin;color:#fff;text-shadow:0 .5vmin 0 #0005}
+.tile{width:min(17vmin,120px);height:min(17vmin,120px);border-radius:22%;display:flex;align-items:center;justify-content:center;font:900 11vmin inherit;font-family:inherit;color:#fff;background:linear-gradient(#ff9ff3,#e84393);box-shadow:0 .8vmin 0 #9c2a68;touch-action:none;cursor:grab;position:relative;z-index:2}
+.tile.n2{background:linear-gradient(#8ce99a,#2f9e44)}.tile.n3{background:linear-gradient(#74c0fc,#1c7ed6)}.tile.n4{background:linear-gradient(#ffd43b,#f08c00)}.tile.n5{background:linear-gradient(#b197fc,#7048e8)}
+.tile.grp{width:auto;min-width:min(22vmin,150px);padding:1vmin 2vmin;font-size:6vmin;background:#fff;color:#000;box-shadow:0 .8vmin 0 #bbb;max-width:34vw;flex-wrap:wrap}
+.tile.drg{z-index:50;transition:none;box-shadow:0 2vmin 2vmin #0005}.tile:not(.drg){transition:transform .3s}.tile[data-done]{cursor:default;box-shadow:none}
+.drop .tile.grp{font-size:3vmin;min-width:0;position:absolute;bottom:1vmin;padding:.5vmin 1vmin}
+.pl{font-size:7vmin;display:flex;align-items:center;gap:1.5vmin;flex-wrap:wrap;justify-content:center}.pl span{animation:bob 1.6s infinite}
+#wstars{font-size:11vmin;letter-spacing:1vmin}#wtxt{font-size:4vmin;font-weight:800;margin:0}
+#nums{display:flex;gap:2vmin;font-size:12vmin;font-weight:900}#nums span{animation:bob 1.5s infinite}
+.cert{background:#fffbe6;border:1vmin double #e0a800;border-radius:3vmin;padding:2vmin 5vmin;display:flex;flex-direction:column;align-items:center;gap:.6vmin}.cert h3{margin:0;font-size:4vmin}.cert p{margin:0;font-size:6vmin;font-weight:900;color:#6a35d9}
+#nm{font:inherit;font-size:3vmin;text-align:center;border:.4vmin solid #c9b6ff;border-radius:2vmin;padding:1vmin}#cname{font-size:5vmin;font-weight:800;min-height:5.5vmin}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}#fx span{position:absolute;top:-10vmin;font-size:6vmin;animation:fall 2.2s linear forwards}@keyframes fall{to{transform:translateY(115vh) rotate(540deg)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+
+</style></head><body data-bg="0">
+<button id="snd" class="rnd" aria-label="الصوت">🔊</button><div id="fx"></div>
+<section class="screen on" id="sc-start">
+<svg class="city" viewBox="0 0 400 150"><circle cx="340" cy="30" r="20" fill="#ffd54a"/><g fill="#fff"><circle cx="60" cy="30" r="14"/><circle cx="80" cy="26" r="18"/><circle cx="102" cy="32" r="12"/></g><rect x="20" y="70" width="60" height="80" rx="8" fill="#ff6b6b"/><rect x="90" y="40" width="50" height="110" rx="8" fill="#4dabf7"/><rect x="150" y="80" width="70" height="70" rx="8" fill="#ffd43b"/><rect x="230" y="50" width="55" height="100" rx="8" fill="#51cf66"/><rect x="295" y="75" width="80" height="75" rx="8" fill="#b197fc"/><g fill="#fff9"><rect x="32" y="85" width="14" height="14"/><rect x="54" y="85" width="14" height="14"/><rect x="102" y="55" width="12" height="12"/><rect x="118" y="55" width="12" height="12"/><rect x="242" y="65" width="12" height="12"/><rect x="262" y="65" width="12" height="12"/><rect x="310" y="90" width="14" height="14"/><rect x="340" y="90" width="14" height="14"/></g></svg>
+<div class="mas"></div><h1>مغامرة في مدينة الأرقام</h1><p class="sub">Number City Adventure</p>
+<button class="btn" id="b-start">ابدأ المغامرة</button><button class="btn blue" id="b-how">طريقة اللعب</button></section>
+<section class="screen" id="sc-how"><h2>طريقة اللعب</h2><div class="cards"><div>👂<span>استمع إلى السؤال</span></div><div>👀<span>شاهد الصور جيدًا</span></div><div>👆<span>اختر الإجابة أو اسحب العنصر إلى مكانه</span></div><div>⭐<span>اجمع النجوم لتفتح مستويات جديدة</span></div></div><button class="btn" id="b-go">لنبدأ</button></section>
+<section class="screen" id="sc-map"><h2>خريطة المدينة</h2><div id="map"></div><div id="tot"></div><button class="btn blue" id="b-home">الرئيسية</button></section>
+<section class="screen" id="sc-play"><div class="bar"><button class="btn sm blue" id="b-back">↩ الخريطة</button><b id="lname"></b><span id="hud">⭐ ٠</span><button class="btn sm" id="b-retry">🔄 أعد المحاولة</button></div>
+<div class="talk"><div class="mas small"></div><div id="bubble" tabindex="0"></div></div><div id="stage"></div></section>
+<section class="screen" id="sc-win"><div class="mas big"></div><h2>أحسنت يا بطل!</h2><div id="wstars"></div><p id="wtxt"></p><button class="btn" id="b-next">المستوى التالي</button></section>
+<section class="screen" id="sc-end"><h2>🎉 احتفال كبير في المدينة! 🎉</h2><div id="nums"></div>
+<div class="cert"><div class="mas small"></div><h3>شهادة إنجاز</h3><p>بطل مدينة الأرقام</p><input id="nm" placeholder="اكتب اسمك (اختياري)" maxlength="20"><div id="cname"></div><small>مغامرة في مدينة الأرقام</small></div><button class="btn" id="b-again">إعادة اللعب</button></section>
+<script>
+const $=s=>document.querySelector(s),AR="٠١٢٣٤٥٦٧٨٩",BAL=["","بالونة واحدة","بالونتان","ثلاث بالونات","أربع بالونات","خمس بالونات"];
+const NAMES=["حديقة الأرقام","سوق العد","قطار الأرقام","بيت الكميات","مغامرة الجمع"],ICONS=["🌼","🍎","🚂","🏠","🎈"];
+const MAS='<svg viewBox="0 0 100 110"><defs><radialGradient id="mg" cx=".35" cy=".3"><stop offset="0" stop-color="#b5ecff"/><stop offset="1" stop-color="#2a9df4"/></radialGradient></defs><ellipse cx="50" cy="104" rx="28" ry="5" fill="#0003"/><line x1="50" y1="20" x2="50" y2="8" stroke="#2a9df4" stroke-width="4"/><circle cx="50" cy="7" r="6" fill="#ffd54a"/><circle cx="50" cy="60" r="42" fill="url(#mg)"/><circle cx="36" cy="54" r="10" fill="#fff"/><circle cx="64" cy="54" r="10" fill="#fff"/><circle cx="38" cy="56" r="5" fill="#222"/><circle cx="66" cy="56" r="5" fill="#222"/><path d="M34 72q16 16 32 0" stroke="#222" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="24" cy="70" r="6" fill="#ff8aa8" opacity=".7"/><circle cx="76" cy="70" r="6" fill="#ff8aa8" opacity=".7"/></svg>';
+let S=load(),sound=true,lv=0,ti=0,first=0,mist=0,locked=false,cur="",ord=[],ac,tmr;
+function load(){const d={unlocked:1,stars:[0,0,0,0,0],name:""};try{return Object.assign(d,JSON.parse(localStorage.getItem("nca")||"{}"))}catch(e){return d}}
+function save(){try{localStorage.setItem("nca",JSON.stringify(S))}catch(e){}}
+function speak(t){if(!sound||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="ar-SA";u.rate=.85;u.pitch=1.2;const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith("ar"));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+function tone(fs){if(!sound)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();fs.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+i*.12;o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);o.start(t);o.stop(t+.22)})}catch(e){}}
+const ar=n=>String(n).replace(/\d/g,d=>AR[d]);
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+function opts(c,n,lo,hi){const s=new Set([c]);while(s.size<n)s.add(lo+Math.floor(Math.random()*(hi-lo+1)));return shuf([...s])}
+function mk(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function show(id,bg){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on",s.id===id));document.body.dataset.bg=bg||0;if(window.speechSynthesis)speechSynthesis.cancel()}
+function q(t){cur=t;$("#bubble").textContent=t;speak(t)}
+function fb(t){$("#bubble").textContent=t;speak(t);clearTimeout(tmr);tmr=setTimeout(()=>{$("#bubble").textContent=cur},2600)}
+function fx(e){for(let i=0;i<26;i++){const s=mk("span","",e||"⭐");s.style.left=Math.random()*100+"%";s.style.animationDelay=Math.random()*.6+"s";$("#fx").append(s);setTimeout(()=>s.remove(),3000)}}
+function correct(){tone([523,659,784]);if(!mist)first++;$("#hud").textContent="⭐ "+AR[first];fx();fb("أحسنت!");setTimeout(()=>{ti++;ti>=5?finish():task()},1700)}
+function wrong(h){mist++;tone([260,220]);fb("حاول مرة أخرى، أنت تستطيع!");if(mist>=2&&h)h.classList.add("hint")}
+function choices(st,c,list,render){const box=mk("div","choices");list.forEach(v=>{const b=mk("button","num",render(v));b.onclick=()=>{if(locked)return;if(v===c){locked=true;b.classList.add("ok");correct()}else{b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),500);wrong(box.children[list.indexOf(c)])}};box.append(b)});st.append(box)}
+function drag(el,drop){el.addEventListener("pointerdown",e=>{if(el.dataset.done||locked)return;e.preventDefault();const x0=e.clientX,y0=e.clientY;el.classList.add("drg");el.style.pointerEvents="none";
+const mv=e=>{el.style.transform=`translate(${e.clientX-x0}px,${e.clientY-y0}px)`},up=e=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);const t=document.elementFromPoint(e.clientX,e.clientY),d=t&&t.closest(".drop");el.style.pointerEvents="";el.classList.remove("drg");if(!(d&&drop(el,d)))el.style.transform=""};
+addEventListener("pointermove",mv);addEventListener("pointerup",up);addEventListener("pointercancel",up)})}
+const L=[
+st=>{const n=ord[ti];q("أين الرقم "+["","واحد","اثنان","ثلاثة","أربعة","خمسة"][n]+"؟");st.append(mk("div","items","<span>🌷</span><span>🌸</span><span>🌼</span><span>🌻</span>"));choices(st,n,opts(n,3,1,5),v=>AR[v])},
+st=>{const n=ord[ti],k=[["🍎","تفاحة"],["🍌","موزة"],["🍓","فراولة"],["🧸","دبًّا"],["⚽","كرة"]][ti];q("كم "+k[1]+" نرى؟");st.append(mk("div","items",(`<span>${k[0]}</span>`).repeat(n)));choices(st,n,opts(n,4,1,5),v=>AR[v])},
+st=>{const set=[[1,2,3],[2,3,4],[3,4,5],[1,3,5],[1,2,3,4,5]][ti],srt=[...set].sort((a,b)=>a-b);q("رتّب الأرقام في العربات، من الأصغر إلى الأكبر");
+const tr=mk("div","train",'<div class="loco">🚂</div>');srt.forEach(v=>{const s=mk("div","drop");s.dataset.v=v;tr.append(s)});const pool=mk("div","pool");let left=set.length;
+shuf(set).forEach(v=>{const t=mk("div","tile n"+v,AR[v]);t.dataset.v=v;drag(t,(el,d)=>{if(d.querySelector(".tile"))return false;if(d.dataset.v===el.dataset.v){d.append(el);el.style.transform="";el.dataset.done=1;tone([600]);if(!--left){locked=true;correct()}return true}
+wrong(tr.querySelector(`[data-v="${el.dataset.v}"]`));fb("ابحث عن الرقم الأصغر أولًا");return false});pool.append(t)});st.append(tr,pool)},
+st=>{const ns=shuf([1,2,3,4,5]).slice(0,3),em=["⚽","⭐","🎈"];q("اسحب المجموعة إلى الباب الذي يحمل الرقم نفسه");const doors=mk("div","doors"),pool=mk("div","pool");let left=3;
+ns.forEach(n=>{const d=mk("div","drop door","<b>"+AR[n]+"</b>");d.dataset.v=n;doors.append(d)});
+shuf(ns).forEach(n=>{const g=mk("div","tile grp",em[ns.indexOf(n)].repeat(n));g.dataset.v=n;drag(g,(el,d)=>{if(d.querySelector(".tile"))return false;if(d.dataset.v===el.dataset.v){d.append(el);el.style.transform="";el.dataset.done=1;tone([600]);if(!--left){locked=true;correct()}return true}
+wrong(doors.querySelector(`[data-v="${el.dataset.v}"]`));return false});pool.append(g)});st.append(doors,pool)},
+st=>{const[a,b]=ord[ti],s=a+b;q(`كان معنا ${BAL[a]}، ثم حصلنا على ${BAL[b]}، كم أصبح لدينا؟`);const B="<span>🎈</span>";st.append(mk("div","pl",B.repeat(a)+" ➕ "+B.repeat(b)));choices(st,s,opts(s,3,2,5),v=>AR[v])}];
+function task(){mist=0;locked=false;const st=$("#stage");st.innerHTML="";L[lv](st)}
+function startLevel(i){lv=i;ti=0;first=0;ord=i==4?shuf([[2,3],[1,1],[3,1],[1,3],[2,2]]):shuf([1,2,3,4,5]);$("#lname").textContent=NAMES[i];$("#hud").textContent="⭐ ٠";show("sc-play",i+1);task()}
+function finish(){const s=first>=4?3:first>=2?2:1;S.stars[lv]=Math.max(S.stars[lv],s);S.unlocked=Math.max(S.unlocked,Math.min(5,lv+2));save();show("sc-win",lv+1);
+$("#wstars").textContent="⭐".repeat(s)+"☆".repeat(3-s);$("#wtxt").textContent="حصلت على "+AR[s]+" نجوم";$("#b-next").textContent=lv<4?"المستوى التالي":"إلى النهاية";tone([523,659,784,1047]);fx();speak("أحسنت يا بطل!")}
+function map(){const m=$("#map");m.innerHTML="";let t=0;NAMES.forEach((n,i)=>{const ok=i<S.unlocked,b=mk("button","node"+(ok?"":" lock")+(ok&&!S.stars[i]?" next":""),`<i>${ok?ICONS[i]:"🔒"}</i>${n}<span>${"⭐".repeat(S.stars[i])||"&nbsp;"}</span>`);t+=S.stars[i];b.onclick=()=>ok?startLevel(i):speak("أنهِ المستوى السابق أولًا");m.append(b)});$("#tot").textContent="⭐ "+ar(t)+" / "+ar(15);show("sc-map");speak("اختر مكانًا لتساعدني في إعادة الأرقام")}
+function end(){show("sc-end",5);$("#nums").innerHTML=[1,2,3,4,5].map(n=>`<span style="color:hsl(${n*60},80%,50%);animation-delay:${n*.2}s">${AR[n]}</span>`).join("");$("#nm").value=S.name;$("#cname").textContent=S.name;fx("🎉");speak("أحسنت! أنت بطل مدينة الأرقام")}
+document.querySelectorAll(".mas").forEach(e=>e.innerHTML=MAS);
+$("#b-start").onclick=map;$("#b-how").onclick=()=>{show("sc-how");speak("استمع إلى السؤال. شاهد الصور جيدًا. اختر الإجابة الصحيحة أو اسحب العنصر إلى مكانه. اجمع النجوم لتفتح مستويات جديدة.")};$("#b-go").onclick=map;$("#b-home").onclick=()=>show("sc-start");
+$("#b-back").onclick=map;$("#b-retry").onclick=()=>startLevel(lv);$("#bubble").onclick=()=>speak(cur);
+$("#b-next").onclick=()=>lv<4?startLevel(lv+1):end();
+$("#nm").oninput=e=>{S.name=e.target.value.trim();$("#cname").textContent=S.name;save()};
+$("#b-again").onclick=()=>{S={unlocked:1,stars:[0,0,0,0,0],name:S.name};save();map()};
+$("#snd").onclick=()=>{sound=!sound;$("#snd").textContent=sound?"🔊":"🔇";if(!sound&&window.speechSynthesis)speechSynthesis.cancel()};
+if(window.speechSynthesis)speechSynthesis.getVoices();
+$("#b-start").addEventListener("click",()=>{},{once:true});
+
+</script></body></html>
